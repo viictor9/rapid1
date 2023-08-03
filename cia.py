@@ -42,7 +42,16 @@ def symmetric():
 
 symmetric()
 
+def RSA():
+    (pubkey, privkey) = rsa.newkeys(512)
+    message = input("Enter plain text for RSA: ").encode('utf8')
+    crypto = (rsa.encrypt(message, pubkey))
+    print(str(crypto)[:150]+"\n"+str(crypto)[150:])
+    message = rsa.decrypt(crypto, privkey)
+    print(message.decode('utf8'))
 
+
+RSA()
 
 
 
