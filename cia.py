@@ -1,5 +1,6 @@
 import pyaes
 from pyDes import *
+import rsa
 from cryptography.fernet import Fernet
 
 
@@ -7,31 +8,33 @@ def AES():
     aes = pyaes.AESModeOfOperationCTR(b'DESCRYPTDESCRYPT')
     plaintext = input("Enter plain text for aes: ")
     ciphertext = aes.encrypt(plaintext)
-    print(ciphertext)
+    print("Encrypted text: ", ciphertext)
     aes = pyaes.AESModeOfOperationCTR(b'DESCRYPTDESCRYPT')
     plaintext = aes.decrypt(ciphertext)
-    print(plaintext)
+    print("Decrypted text: ", plaintext)
 
-AES()
+# AES()
 
 def DES():
     data = input("Enter plain text for des: ")
     k = des("DESCRYPT", CBC, "\0\0\0\0\0\0\0\0", pad=None, padmode=PAD_PKCS5) 
     d=k.encrypt(data)
-    print("Encrypted: %r" % d)
-    print("Decrypted: %r" % k.decrypt(d))
+    print("Encrypted : %r" % d)
+    print("Decrypted : %r" % k.decrypt(d))
       
-DES()
+# DES()
 
 def symmetric():
 
-    plaintext = input("Enter plain text: ")
+    plaintext = input(b"Enter plain text: ")
 
     key = Fernet.generate_key()
 
     f = Fernet(key)
 
-    token = f.encrypt(b"hello")
+    message = plaintext.encode()
+
+    token = f.encrypt(message)
 
     print(token)
 
@@ -40,7 +43,7 @@ def symmetric():
     print(d)
 
 
-symmetric()
+# symmetric()
 
 def RSA():
     (pubkey, privkey) = rsa.newkeys(512)
@@ -51,7 +54,29 @@ def RSA():
     print(message.decode('utf8'))
 
 
-RSA()
+# RSA()
+
+
+cryp = int(input("Enter the type of cryptography: \n 1:Symmetric \n 2:Asymmetric \n"))
+
+
+
+if cryp == 1:
+
+    algo = int(input("Enter the technique to encrypt: \n 1:AES\n 2:DES\n 3:Fernet"))
+
+    if algo == 1:
+        AES()
+
+    elif algo == 2:
+        DES()
+
+    else:
+        symmetric()
+
+else:
+    RSA()
+
 
 
 
