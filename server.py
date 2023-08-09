@@ -38,7 +38,7 @@ server_data = client_socket.recv(1024).decode()
 print(f"Received from server: {server_data}")
 
 # Send a message to the server
-message = "Hello, server! This is the client."
+message = input("Enter the message to send to server: ")
 client_socket.send(message.encode())
 
 # Close the client socket

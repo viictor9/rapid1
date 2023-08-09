@@ -49,7 +49,7 @@ client_socket, client_address = server_socket.accept()
 print(f"Connection established with {client_address}")
 
 # Send a message to the client
-message = "Hello, client! This is the server."
+message = input("Enter the message to send to the client: ")
 client_socket.send(message.encode())
 
 # Receive data from the client

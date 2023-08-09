@@ -1,72 +1,81 @@
+import pyaes
+import socket 
+import rsa
+import hashlib
 
-# Import turtle package
-import turtle
-  
-# Creating a turtle object(pen)
-pen = turtle.Turtle()
-  
-# Defining a method to draw curve
-def curve():
-    for i in range(200):
-  
-        # Defining step by step curve motion
-        pen.right(1)
-        pen.forward(1)
-  
-# Defining method to draw a full heart
-def heart():
-  
-    # Set the fill color to red
-    pen.fillcolor('red')
-  
-    # Start filling the color
-    pen.begin_fill()
-  
-    # Draw the left line
-    pen.left(140)
-    pen.forward(113)
-  
-    # Draw the left curve
-    curve()
-    pen.left(120)
-  
-    # Draw the right curve
-    curve()
-  
-    # Draw the right line
-    pen.forward(112)
-  
-    # Ending the filling of the color
-    pen.end_fill()
-  
-# Defining method to write text
-def txt():
-  
-    # Move turtle to air
-    pen.up()
-  
-    # Move turtle to a given position
-    pen.setpos(-68, 95)
-  
-    # Move the turtle to the ground
-    pen.down()
-  
-    # Set the text color to lightgreen
-    pen.color('black')
-  
-    # Write the specified text in 
-    # specified font style and size
-    pen.write("Rusda", font=(
-      "Verdana", 12, "bold"))
-  
-  
-# Draw a heart
-heart()
-  
-# Write text
-txt()
+print("1: symmetric \n2: asymmetric ")
+choice = int(input("Enter the type of cryptography: "))
+# print("1: symmetric \n2: asymmetric ")
 
-while True:
-  
-# To hide turtle
-    pen.ht()
+mainmessage = input("Enter the message: ")
+
+
+def AES():
+    aes = pyaes.AESModeOfOperationCTR(b'DESCRYPTDESCRYPT')
+    # plaintext = input("Enter plain text for aes: ")
+    ciphertext = aes.encrypt(mainmessage)
+    print("Encrypted text: ", ciphertext)
+
+    #decryption
+    # aes = pyaes.AESModeOfOperationCTR(b'DESCRYPTDESCRYPT')
+    # plaintext = aes.decrypt(ciphertext)
+    # print("Decrypted text: ", plaintext)
+
+
+def RSA():
+    (pubkey, privkey) = rsa.newkeys(512)
+    message = mainmessage.encode("UTF-8")
+    crypto = (rsa.encrypt(message, pubkey))
+    finalMessage = print(str(crypto)[:150]+"\n"+str(crypto)[150:])
+    # message = rsa.decrypt(crypto, privkey)
+    # print(message.decode('utf8'))
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    server_address = ('localhost', 8080)  
+    server_socket.bind(server_address)
+
+    server_socket.listen(1)
+
+    print("Server is listening for incoming connections...")
+
+    client_socket, client_address = server_socket.accept()
+    print(f"Connection established with {client_address}")
+
+    message = finalMessage.encode("UTF-8")
+    client_socket.send(message)
+
+    data = client_socket.recv(1024).decode()
+    print(f"Received from client: {data}")
+
+    client_socket.close()
+
+    server_socket.close()
+
+if choice == 1:
+    AES()
+
+else:
+    RSA()
+
+
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# server_address = ('localhost', 8080)  
+# server_socket.bind(server_address)
+
+# server_socket.listen(1)
+
+# print("Server is listening for incoming connections...")
+
+# client_socket, client_address = server_socket.accept()
+# print(f"Connection established with {client_address}")
+
+# message = "Hello, client! This is the server."
+# client_socket.send(message.encode())
+
+# data = client_socket.recv(1024).decode()
+# print(f"Received from client: {data}")
+
+# client_socket.close()
+
+# server_socket.close()

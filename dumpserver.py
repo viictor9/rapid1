@@ -17,6 +17,7 @@ received_md5_hash = client_socket.recv(1024).decode()
 calculated_md5_hash = hashlib.md5(server_data).hexdigest()
 
 if received_md5_hash == calculated_md5_hash:
+    print(f"Hash is: {calculated_md5_hash}")
     print("Message integrity verified.")
 else:
     print("Message integrity compromised.")
@@ -24,7 +25,12 @@ else:
 print("Encrypted message from the server: ", server_data)
 print(f"When decrypted: {decrypted_data}")
 
-message = input("Enter the message to send to server: ")
+aes = pyaes.AESModeOfOperationCTR(b'DESCRYPTDESCRYPT')
+message = input("Enter message: ")
+# message = aes.encrypt(message.encode("UTF-8"))
 client_socket.send(message.encode())
 
 client_socket.close()
+
+
+#client
